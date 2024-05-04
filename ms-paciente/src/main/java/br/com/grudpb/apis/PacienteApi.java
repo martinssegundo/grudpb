@@ -6,6 +6,7 @@ import br.com.grudpb.apis.dtos.exceptions.ApiError;
 import br.com.grudpb.commands.CommandReturn;
 import br.com.grudpb.qualifiers.CommandAtualizaPacienteQualifier;
 import br.com.grudpb.qualifiers.CommandBasicoPacienteQualifier;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
@@ -22,7 +23,7 @@ import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestResponse;
 
 @Path("v1/paciente")
-@WithTransaction
+@WithSession
 public class PacienteApi{
 
     private final CommandReturn<PacienteBasicoDTO, Long> commandBasicoPaciente;

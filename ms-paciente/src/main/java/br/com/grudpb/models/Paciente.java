@@ -24,7 +24,7 @@ public class Paciente extends PanacheEntityBase {
     @Column(name = "num_idade")
     private Long idade;
     @ElementCollection
-    @CollectionTable(name = "tb_consulta", joinColumns = @JoinColumn(name = "paciente_id"))
+    @CollectionTable(name = "tb_paciente_consulta", joinColumns = @JoinColumn(name = "paciente_id"))
     @Column(name = "cod_consulta")
     private List<Long> consultas;
 
