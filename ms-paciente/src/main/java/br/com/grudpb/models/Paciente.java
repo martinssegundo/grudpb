@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Uni;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Vector;
 
 @Entity
 @Table(name = "tb_pasciente")
@@ -29,10 +30,22 @@ public class Paciente extends PanacheEntityBase {
 
     public Paciente(){}
 
-    public Paciente(Long id, String nome, Long idade) {
+    public Paciente(Long id, String nome, Long idade, Long codConsulta) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
+        this.addConsulta(codConsulta, this);
+    }
+
+    public Paciente(String nome, Long codConsulta) {
+        this.nome = nome;
+        this.addConsulta(codConsulta, this);
+    }
+
+    public Paciente(Long id, String nome, Long codConsulta) {
+        this.id = id;
+        this.nome = nome;
+        this.addConsulta(codConsulta, this);
     }
 
     public Long getId() {
@@ -51,7 +64,21 @@ public class Paciente extends PanacheEntityBase {
         return consultas;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setIdade(Long idade) {
+        this.idade = idade;
+    }
+
     public Uni<Void> addConsulta(Long codConsulta, Paciente paciente) {
+        if(consultas == null)
+            consultas = new Vector<>();
         paciente.getConsultas().add(codConsulta);
         return paciente.persistAndFlush().replaceWithVoid();
     }

@@ -9,6 +9,6 @@ import jakarta.ws.rs.ext.Provider;
 public class PacienteHandler implements ExceptionMapper<PacienteException> {
     @Override
     public Response toResponse(PacienteException e) {
-        return Response.status(e.getStatus()).build();
+        return Response.status(e.getApiError().status()).entity(e.getApiError()).build();
     }
 }
