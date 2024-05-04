@@ -3,12 +3,14 @@ package br.com.grudpb.models;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.persistence.*;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;
 import java.util.Vector;
 
 @Entity
 @Table(name = "tb_pasciente")
+@Schema(name = "paciente")
 @SequenceGenerator(
         name = "personSequence",
         sequenceName = "person_seq",
