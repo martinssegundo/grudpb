@@ -1,4 +1,6 @@
 package br.com.grudpb.commands.impl;
 
-public class CommandRecuperarConsulta {
+import br.com.grudpb.commands.Command;
+
+public class CommandRecuperarConsulta implements Command {
 }

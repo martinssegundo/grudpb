@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 @Entity
-@Table(name = "tb_pasciente")
-@Schema(name = "paciente")
+@Table(schema = "paciente", name = "tb_paciente")
 @SequenceGenerator(
         name = "personSequence",
         sequenceName = "person_seq",

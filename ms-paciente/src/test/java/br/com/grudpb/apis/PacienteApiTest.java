@@ -1,57 +1,56 @@
 package br.com.grudpb.apis;
 
-import br.com.grudpb.apis.dtos.PacienteBasicoDTO;
-import br.com.grudpb.apis.dtos.PacienteCompletoDTO;
-import br.com.grudpb.commands.CommandReturn;
-import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
-import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
-import org.jboss.resteasy.reactive.RestResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
 class PacienteApiTest {
-    @Mock
-    CommandReturn<PacienteBasicoDTO, Long> commandBasicoPaciente;
-    @Mock
-    CommandReturn<PacienteBasicoDTO, PacienteCompletoDTO> commandAtualizaPaciente;
     @Inject
     PacienteApi pacienteApi;
 
-
-    //@Test
+    @Test
     void testGetPacienteBasico() {
-        when(commandBasicoPaciente.execute(anyLong())).thenReturn(null);
-        when(commandAtualizaPaciente.execute(any(PacienteCompletoDTO.class))).thenReturn(null);
         given()
                 .when()
-                .get("")
+                .get("/v1/paciente/informacoes/basicas/1")
                 .then()
-                .statusCode(200);
-        Uni<Response> result = pacienteApi.getPacienteBasico(Long.valueOf(1));
-        Assertions.assertEquals(null, result);
+                .statusCode(200)
+                .body("nome", equalTo("Luiz Segundo"))
+                .body("codigo-identificacao", equalTo("1"));
     }
 
     //@Test
     void testGetPacienteCompleto() {
-        Uni<RestResponse<PacienteCompletoDTO>> result = pacienteApi.getPacienteCompleto(Long.valueOf(1));
-        Assertions.assertEquals(null, result);
+        given()
+                .when()
+                .get("/v1/paciente/informacoes/completo/1")
+                .then()
+                .statusCode(200)
+                .body("nome", equalTo("Luiz Segundo"))
+                .body("codigo-identificacao", equalTo("1"));
     }
 
-    //@Test
-    void testAtualizaPaciente() {
-        //when(commandBasicoPaciente.execute(anyLong())).thenReturn(null);
-        //when(commandAtualizaPaciente.execute(any(PacienteCompletoDTO.class))).thenReturn(null);
+    @Test
+    void testAtualizaPaciente() throws IOException {
 
-        Uni<Response> result = pacienteApi.atualizaPaciente(new PacienteCompletoDTO("nome", Long.valueOf(1), Long.valueOf(1)));
-        Assertions.assertEquals(null, result);
+        String filePath = "jsons/paciente-update-body.json"; // Caminho do arquivo dentro da pasta resources
+        String jsonContent = new String(getClass().getClassLoader().getResourceAsStream(filePath).readAllBytes());
+
+
+
+        given()
+                .contentType("application/json")
+                .body(jsonContent)
+                .when()
+                .post("/v1/paciente")
+                .then()
+                .statusCode(201);
     }
 }

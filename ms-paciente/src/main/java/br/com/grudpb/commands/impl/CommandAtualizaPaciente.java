@@ -35,6 +35,7 @@ public class CommandAtualizaPaciente implements CommandReturn<PacienteBasicoDTO,
         return Paciente.findById(pacienteCompletoDTO.codigo())
                 .flatMap(encontrado -> {
                     Paciente pacienteEncontrado = (Paciente) encontrado;
+                    pacienteEncontrado.getConsultas();
                     pacienteEncontrado.setNome(pacienteCompletoDTO.nome());
                     pacienteEncontrado.addConsulta(pacienteCompletoDTO.codigoConsulta(), pacienteEncontrado);
                     return encontrado.persistAndFlush();
